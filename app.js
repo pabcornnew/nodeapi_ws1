@@ -13,6 +13,7 @@ var routeauth = './routes/auth/';
 var usersRouter = require(routeauth + 'users');
 var loginRouter = require(routeauth + 'login');
 var productRouter = require(routeauth + 'products');
+var orderRouter = require(routeauth + 'orders');
 
 var app = express();
 var cors = require('cors');
@@ -33,6 +34,8 @@ app.use('/', indexRouter);
 app.use('/users', usersRouter);
 app.use('/api/v1', loginRouter);
 app.use('/api/v1', productRouter);
+app.use('/api/v1', orderRouter);
+
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
