@@ -5,4 +5,4 @@ const products = new mongoose.Schema({
   amount: { type: Number },
 });
 
-module.exports = mongoose.model("products", userSchema);
+module.exports = mongoose.model("products", products);

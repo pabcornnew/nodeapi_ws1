@@ -9,7 +9,8 @@ const userSchema = new Schema(
     last_name: { type: String },
     age: { type: Number },
     role_id: { type: Number}, 
-    token: {type: String}
+    token: {type: String},
+    grant_access: {type: Boolean, default: false}
   },
   {
     timestamps: true,

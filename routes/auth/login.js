@@ -72,7 +72,7 @@ router.post("/register", async function (req, res, next) {
     let save = await user.save();
 
     const token = jwt.sign({ username, role_id }, process.env.TOKEN_KEY, {
-      expiresIn: "2h",
+      expiresIn: "1h",
     });
     user.role_id = 0;
     user.token = token;
@@ -84,7 +84,17 @@ router.post("/register", async function (req, res, next) {
 });
 
 //approve
-router.put("/approve/:id");
+router.put("/approve/:id", async (req, res, next) => {
+  try {
+    let id = req.params.id;
+    let update = await userModel.findByIdAndUpdate(id, { grant_access: true });
+    return res.status(200).send({
+      update,
+    });
+  } catch (error) {
+    return res.status(500).send(error.toString());
+  }
+});
 /* 1] End User login */
 
 module.exports = router;
