@@ -4,7 +4,7 @@ const multer = require("multer");
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 
-const userSchema = require("../models/users.model");
+const userSchema = require("../../models/users.model");
 
 /*---------------------------- Config Upload File ------------------------------ */
 const storage = multer.diskStorage({
