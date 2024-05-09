@@ -6,7 +6,8 @@ const router = express.Router();
 //get orders product
 router.get("/products/:id/orders", async (req, res, next) => {
   try {
-    await orderModel.find({});
+    let order = await orderModel.findById({ _id: req.params.id });
+    res.status(200).send(order);
   } catch (error) {
     return res.status(500).send(error);
   }

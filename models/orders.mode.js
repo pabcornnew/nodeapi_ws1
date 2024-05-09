@@ -1,7 +1,9 @@
 const mongoose = require("mongoose");
 const orders = new mongoose.Schema({
-  order_name: { type: String },
-  amount: { type: Number },
+  productId: { type: mongoose.Types.ObjectId, ref: 'products' },
+  price: { type: Number },
+  quantity: { type: String },
+  total: {type: Number}
 });
 
 module.exports = mongoose.model("orders", orders);
