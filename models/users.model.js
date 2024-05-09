@@ -8,8 +8,8 @@ const userSchema = new Schema(
     first_name: { type: String },
     last_name: { type: String },
     age: { type: Number },
-    role_id: { type: Number}, 
-    token: {type: String},
+    role_id: { type: Number , default: 0}, 
+    token: {type: String, default: "NULL"},
     grant_access: {type: Boolean, default: false}
   },
   {

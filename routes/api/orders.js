@@ -1,4 +1,5 @@
 const orderModel = require("../../models/orders.model");
+const productModel = require("../../models/products.model");
 const express = require("express");
 const router = express.Router();
 
@@ -7,7 +8,7 @@ const router = express.Router();
 router.get("/products/:id/orders", async (req, res, next) => {
   try {
     let order = await orderModel
-      .findById({ _id: req.params.id })
+      .find({ productId: req.params.id })
       .populate("productId")
       .exec();
     res.status(200).send(order);
@@ -19,10 +20,12 @@ router.get("/products/:id/orders", async (req, res, next) => {
 //add orders
 router.post("/products/:id/orders", async (req, res, next) => {
   try {
-    let { quantity } = req.body;
-    let id = req.params.id;
+    let {quantity} = req.body;
+    let productId = req.params.id;
 
-    const getProduct = await productModel.findById({ id });
+    console.log(productId + "\n"+ quantity);
+
+    const getProduct = await productModel.findById( productId );
 
     if (!getProduct) {
       return res.status(404).send({
@@ -37,10 +40,10 @@ router.post("/products/:id/orders", async (req, res, next) => {
         succuess: false,
       });
     }
-    const total = getProduct.amount * quantity;
+    const total = getProduct.price * quantity;
 
     const neworder = new orderModel({
-      productId: id,
+      productId: productId,
       price: getProduct.price,
       quantity: quantity,
       total: total,
@@ -58,17 +61,23 @@ router.post("/products/:id/orders", async (req, res, next) => {
       sccuess: true,
     });
   } catch (error) {
-    return res.status(500).send(error);
+    return res.status(500).send({
+      message: error,
+      sccuess: false
+    });
   }
 });
 
 //show all orders
 router.get("/orders", async (req, res, next) => {
   try {
-    await orderModel.find({});
+    const showOrder = await orderModel.find({});
+    return res.status(200).send(showOrder);
   } catch (error) {
     return res.status(500).send(error);
   }
 });
 
 /* 3] End Order */
+
+module.exports = router;

@@ -8,7 +8,7 @@ require('dotenv').config();
 
 var indexRouter = require('./routes/index');
 
-var routeauth = './routes/auth/';
+var routeauth = './routes/api/';
 
 var usersRouter = require(routeauth + 'users');
 var loginRouter = require(routeauth + 'login');
@@ -18,6 +18,8 @@ var orderRouter = require(routeauth + 'orders');
 var app = express();
 var cors = require('cors');
 
+// verify token
+const verifyToken = require('./middleware/jwt_decode');
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
@@ -31,10 +33,12 @@ app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 require('./db');
 app.use('/', indexRouter);
-app.use('/users', usersRouter);
-app.use('/api/v1', loginRouter);
-app.use('/api/v1', productRouter);
-app.use('/api/v1', orderRouter);
+app.use('/api/v1' ,loginRouter);
+
+app.use('/users',verifyToken, usersRouter);
+
+app.use('/api/v1', verifyToken, productRouter);
+app.use('/api/v1', verifyToken, orderRouter);
 
 
 // catch 404 and forward to error handler
