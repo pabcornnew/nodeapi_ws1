@@ -41,7 +41,8 @@ router.post("/add", async function (req, res, next) {
 
     if (oldUser) {
       res.status(409).send("Username is already exist.");
-    } else {
+    } 
+    else {
       let hashpwd = await bcrypt.hash(password, 10);
 
       let user = new userSchema({

@@ -7,9 +7,9 @@ const userSchema = new Schema(
     password: { type: String },
     first_name: { type: String },
     last_name: { type: String },
-    age: { type: Number },
+    age: { type: Number , default: 0},
     role_id: { type: Number , default: 0}, 
-    token: {type: String, default: "NULL"},
+    token: {type: String , default: ''},
     grant_access: {type: Boolean, default: false}
   },
   {

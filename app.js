@@ -35,7 +35,7 @@ require('./db');
 app.use('/', indexRouter);
 app.use('/api/v1' ,loginRouter);
 
-app.use('/users',verifyToken, usersRouter);
+app.use('/users', usersRouter);
 
 app.use('/api/v1', verifyToken, productRouter);
 app.use('/api/v1', verifyToken, orderRouter);

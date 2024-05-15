@@ -62,29 +62,37 @@ router.post("/login", async (req, res, next) => {
 });
 
 //register
-router.post("/register", async function (req, res, next) {
+router.post("/register", async (req, res, next) => {
   try {
-    let { username, password, fame, lname, age } = req.body;
-    // const oldUser = await userModel.find({ username: username });
+    const { user_name, pass_word, firstname, lastname, age } = req.body;
 
-    // if (!oldUser) {
-    //   return res.status(409).send("Username is already exist.");
-    // }
+    if (!user_name || !pass_word || !firstname || !lastname || !age) {
+      return res.status(400).send({
+        message: "All fields are required",
+        success: false,
+      });
+    }
+    const haspassword = await bcrypt.hash(pass_word.toString(), 10);
 
-    let hashpwd = await bcrypt.hash(password, 10);
+    console.log(haspassword);
 
     let newUser = new userModel({
-      username: username,
-      password: hashpwd,
-      first_name: fame,
-      last_name: lname,
+      username: user_name,
+      password: haspassword,
+      first_name: firstname,
+      last_name: lastname,
       age: age,
     });
-    //role_id (0 client, 1 admin)
 
-    let saveuser = await newUser.save();
+    await newUser.save();
 
-    return res.status(201).send(saveuser);
+    console.log("ok");
+
+    return res.status(201).send({
+      data: newUser,
+      message: "success",
+      succuess: true,
+    });
   } catch (error) {
     return res.status(500).send(error.toString());
   }
@@ -98,6 +106,25 @@ router.put("/approve/:id", verifyToken, async (req, res, next) => {
     return res.status(200).send({
       update,
     });
+  } catch (error) {
+    return res.status(500).send(error.toString());
+  }
+});
+
+//update
+router.put("/edit/user/:id", async (req, res, next) => {
+  try {
+    let id = req.params.id;
+    const { firstname, lastname, age } = req.body;
+
+    const editUser = new userModel({
+      first_name: firstname,
+      last_name: lastname,
+      age: age
+    })
+
+    let update = await userModel.findByIdAndUpdate(id, editUser);
+    return res.status(200).send({ update });
   } catch (error) {
     return res.status(500).send(error.toString());
   }
